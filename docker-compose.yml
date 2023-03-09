@@ -1,0 +1,24 @@
+version: '3'
+services:
+  jupyterlab:
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+    # Imageにあるユーザー
+    volumes:
+       - "./work:/home/jovyan"
+
+    environment:
+      GRANT_SUDO: "yes"
+
+    # .envのからUIDとGIDをマッピング => docker内と外でのファイルオーナー違いを防ぐ
+    user: "${UID}:${GID}"
+
+    privileged: true
+
+    ports:
+      - "8888:8888"
+
+    command: start.sh jupyter lab
+    
